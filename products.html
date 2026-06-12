@@ -1,8 +1,11 @@
-<!DOCTYPE html><html lang="th">
+<!DOCTYPE html>
+<html lang="th">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Babuu Products</title><style>
+<title>Babuu Products</title>
+
+<style>
 *{
 margin:0;
 padding:0;
@@ -38,47 +41,57 @@ color:#6B5B52;
 font-weight:bold;
 }
 
-.container{
-max-width:1000px;
-margin:auto;
-padding:20px;
+/* 🔵 FILTER */
+.filter-box{
+display:flex;
+gap:8px;
+overflow-x:auto;
+padding:10px;
+white-space:nowrap;
 }
 
-.grid{
+.filter-box button{
+flex:0 0 auto;
+padding:8px 12px;
+border:none;
+border-radius:12px;
+background:white;
+cursor:pointer;
+font-weight:bold;
+}
+
+.filter-box button:hover{
+background:#FFD6E8;
+}
+
+/* 🟣 PRODUCT GRID */
+#product-list{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:20px;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:15px;
+padding:20px;
 }
 
 .card{
 background:white;
-padding:25px;
-border-radius:20px;
+padding:15px;
+border-radius:15px;
 text-align:center;
-box-shadow:0 2px 10px rgba(0,0,0,.08);
-transition:.2s;
+box-shadow:0 2px 8px rgba(0,0,0,0.08);
+cursor:pointer;
+transition:0.2s;
 }
 
 .card:hover{
-transform:translateY(-3px);
+transform:scale(1.03);
 }
 
-.card h2{
+.card img{
+width:100%;
+height:140px;
+object-fit:cover;
+border-radius:10px;
 margin-bottom:10px;
-}
-
-.card p{
-margin-bottom:15px;
-}
-
-.btn{
-display:inline-block;
-background:#D8F3E2;
-padding:10px 18px;
-border-radius:12px;
-text-decoration:none;
-color:#6B5B52;
-font-weight:bold;
 }
 
 footer{
@@ -87,18 +100,26 @@ padding:20px;
 text-align:center;
 background:#F8D7DA;
 }
-</style></head><body><header>
+</style>
+
+</head>
+
+<body>
+
+<header>
 <h1>🛍️ Products</h1>
 <p>หมวดหมู่สินค้าของ Babuu</p>
-</header><nav>
+</header>
+
+<nav>
 <a href="index.html">🏠 Home</a>
 <a href="about.html">ℹ️ About</a>
 <a href="service.html">🛠️ Services</a>
 <a href="contact.html">📱 Contact</a>
-</nav><div class="container"><div class="grid"><div class="card">
+</nav>
 
+<!-- 🔥 FILTER -->
 <div class="filter-box">
-
 <button onclick="filterCategory('all')">ทั้งหมด</button>
 <button onclick="filterCategory('ตูน')">ตูน</button>
 <button onclick="filterCategory('ของตกแต่ง')">ของตกแต่ง</button>
@@ -122,34 +143,62 @@ background:#F8D7DA;
 <button onclick="filterCategory('PNG / BG / เจ้าหญิง')">PNG / BG / เจ้าหญิง</button>
 <button onclick="filterCategory('หวย / เบอร์')">หวย / เบอร์</button>
 <button onclick="filterCategory('สูบ / สิทธิ์ขาด')">สูบ / สิทธิ์ขาด</button>
-
 </div>
 
-  
-<h2>🔋 Power Bank</h2>
-<p>แบตสำรองและอุปกรณ์ชาร์จ</p>
-<a class="btn" href="powerbank.html">
-ดูสินค้า
-</a>
-</div><div class="card">
-<h2>📱 Tablet</h2>
-<p>แท็บเล็ตและอุปกรณ์เสริม</p>
-<a class="btn" href="tablet.html">
-ดูสินค้า
-</a>
-</div><div class="card">
-<h2>🎮 Nintendo</h2>
-<p>เครื่องเกมและอุปกรณ์</p>
-<a class="btn" href="nintendo.html">
-ดูสินค้า
-</a>
-</div><div class="card">
-<h2>🎁 Other</h2>
-<p>สินค้าอื่น ๆ</p>
-<a class="btn" href="other.html">
-ดูสินค้า
-</a>
-</div></div></div><footer>
+<!-- 🟢 PRODUCT AREA -->
+<div id="product-list"></div>
+
+<footer>
 Babuu © 2026
-</footer></body>
+</footer>
+
+<!-- ⚙️ SCRIPT -->
+<script>
+const API = "https://script.google.com/macros/s/AKfycbwn5O2T57lvmM4P8log2rjs6MjJw-84pcL7lgQQRkbX96faHDjH77n9CbbmE7oQ9t_B/exec";
+
+let allProducts = [];
+
+fetch(API)
+.then(res => res.json())
+.then(data => {
+    allProducts = data;
+    renderProducts(allProducts);
+});
+
+function renderProducts(products){
+const box = document.getElementById("product-list");
+box.innerHTML = "";
+
+products.forEach(p => {
+box.innerHTML += `
+<div class="card" onclick="openDrive('${p.drive}')">
+<img src="${p.img}">
+<h3>${p.name}</h3>
+<p>${p.price} บาท</p>
+</div>
+`;
+});
+}
+
+/* 🔥 FILTER */
+function filterCategory(cat){
+
+if(cat === "all"){
+renderProducts(allProducts);
+return;
+}
+
+const filtered = allProducts.filter(p =>
+p.category === cat
+);
+
+renderProducts(filtered);
+}
+
+function openDrive(link){
+window.open(link,"_blank");
+}
+</script>
+
+</body>
 </html>
