@@ -1,10 +1,27 @@
 <div class="filter-box">
-  <button onclick="filterCategory('all')">ทั้งหมด</button>
-  <button onclick="filterCategory('ตูน')">ตูน</button>
-  <button onclick="filterCategory('กางเกง')">กางเกง</button>
-  <button onclick="filterCategory('กระโปรง')">กระโปรง</button>
-  <button onclick="filterCategory('เครื่องสำอาง')">เครื่องสำอาง</button>
-  <button onclick="filterCategory('ของใช้')">ของใช้</button>
-  <button onclick="filterCategory('ของกิน')">ของกิน</button>
-  <button onclick="filterCategory('เครื่องประดับ')">เครื่องประดับ</button>
+
+<button onclick="filterCategory('all')">ทั้งหมด</button>
+<button onclick="filterCategory('ตูน')">ตูน</button>
+<button onclick="filterCategory('ของตกแต่ง')">ของตกแต่ง</button>
+<button onclick="filterCategory('บ็อค / Block')">บ็อค / Block</button>
+<button onclick="filterCategory('เกม / ADS')">เกม / ADS</button>
+<button onclick="filterCategory('Effect')">Effect</button>
+<button onclick="filterCategory('BG / พื้นหลัง')">BG / พื้นหลัง</button>
+<button onclick="filterCategory('Font')">Font</button>
+<button onclick="filterCategory('Form')">Form</button>
+<button onclick="filterCategory('Sticker')">Sticker</button>
+<button onclick="filterCategory('เบส')">เบส</button>
+<button onclick="filterCategory('ลายเส้น')">ลายเส้น</button>
+<button onclick="filterCategory('สัตว์ / ต้าวก้อน')">สัตว์ / ต้าวก้อน</button>
+<button onclick="filterCategory('Character (หมี)')">Character 🐻</button>
+<button onclick="filterCategory('Style IG')">Style IG</button>
+<button onclick="filterCategory('กลุ่มสอนป้าย')">กลุ่มสอนป้าย</button>
+<button onclick="filterCategory('สอนทำหัวป้าย')">สอนทำหัวป้าย</button>
+<button onclick="filterCategory('กลุ่มรวม')">กลุ่มรวม</button>
+<button onclick="filterCategory('ห้อง F')">ห้อง F</button>
+<button onclick="filterCategory('Course / เช่า')">Course / เช่า</button>
+<button onclick="filterCategory('PNG / BG / เจ้าหญิง')">PNG / BG</button>
+<button onclick="filterCategory('หวย / เบอร์')">หวย / เบอร์</button>
+<button onclick="filterCategory('สูบ / สิทธิ์ขาด')">สูบ / สิทธิ์ขาด</button>
+
 </div>
