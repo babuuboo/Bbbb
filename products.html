@@ -1,77 +1,16 @@
-<!DOCTYPE html>
-<html lang="th">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Babuu Products</title>
-
-<style>
-body{
-margin:0;
-font-family:Arial;
-background:#FFF6E9;
-color:#6B5B52;
-}
-
-header{
-background:#F8D7DA;
-padding:20px;
-text-align:center;
-}
-
-/* 🔥 FILTER */
-.filter-box{
-display:flex;
-gap:8px;
-overflow-x:auto;
-padding:10px;
-white-space:nowrap;
-}
-
-.filter-box button{
-flex:0 0 auto;
-padding:8px 12px;
-border:none;
-border-radius:12px;
-background:white;
-cursor:pointer;
-font-weight:bold;
-}
-
-/* 🟢 PRODUCT */
-#product-list{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-gap:15px;
-padding:15px;
-}
-
-.card{
-background:white;
-padding:15px;
-border-radius:15px;
-text-align:center;
-box-shadow:0 2px 8px rgba(0,0,0,0.1);
-cursor:pointer;
-}
-
-.card img{
-width:100%;
-height:120px;
-object-fit:cover;
-border-radius:10px;
-margin-bottom:10px;
-}
-</style>
-</head>
-
-<body>
-
 <header>
-<h1>🛍️ Babuu Products</h1>
+<h1>🛍️ Products</h1>
+<p>หมวดหมู่สินค้าของ Babuu</p>
 </header>
 
-<!-- 🔥 หมวดหมู่ -->
+<nav>
+<a href="index.html">🏠 Home</a>
+<a href="about.html">ℹ️ About</a>
+<a href="service.html">🛠️ Services</a>
+<a href="contact.html">📱 Contact</a>
+</nav>
+
+<!-- 🔥 FILTER (ต้องอยู่ตรงนี้เท่านั้น) -->
 <div class="filter-box">
 <button onclick="filterCategory('all')">ทั้งหมด</button>
 <button onclick="filterCategory('ตูน')">ตูน</button>
@@ -87,58 +26,5 @@ margin-bottom:10px;
 <button onclick="filterCategory('Course / เช่า')">Course</button>
 </div>
 
-<!-- 🟢 สินค้า -->
+<!-- 🟢 PRODUCT AREA (สำคัญมาก ต้องมี) -->
 <div id="product-list"></div>
-
-<script>
-const API = "https://script.google.com/macros/s/AKfycbwn5O2T57lvmM4P8log2rjs6MjJw-84pcL7lgQQRkbX96faHDjH77n9CbbmE7oQ9t_B/exec";
-
-let allProducts = [];
-
-/* 📦 โหลดสินค้า */
-fetch(API)
-.then(res => res.json())
-.then(data => {
-    allProducts = data;
-    renderProducts(allProducts);
-});
-
-/* 🧩 แสดงสินค้า */
-function renderProducts(products){
-const box = document.getElementById("product-list");
-box.innerHTML = "";
-
-products.forEach(p => {
-box.innerHTML += `
-<div class="card" onclick="openDrive('${p.drive}')">
-<img src="${p.img}">
-<h3>${p.name}</h3>
-<p>${p.price} บาท</p>
-</div>
-`;
-});
-}
-
-/* 🔥 FILTER */
-function filterCategory(cat){
-
-if(cat === "all"){
-renderProducts(allProducts);
-return;
-}
-
-const filtered = allProducts.filter(p =>
-p.category === cat
-);
-
-renderProducts(filtered);
-}
-
-/* 🔗 เปิดลิงก์ */
-function openDrive(link){
-window.open(link,"_blank");
-}
-</script>
-
-</body>
-</html>
