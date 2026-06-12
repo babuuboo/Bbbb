@@ -1,0 +1,38 @@
+body {
+  font-family: sans-serif;
+  background: #fff5f8;
+  margin: 0;
+  text-align: center;
+}
+
+h1 {
+  margin: 20px;
+  color: #ff6fae;
+}
+
+#product-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 12px;
+}
+
+.product {
+  background: white;
+  border-radius: 15px;
+  padding: 10px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: 0.2s;
+}
+
+.product:hover {
+  transform: scale(1.03);
+}
+
+.product img {
+  width: 100%;
+  border-radius: 12px;
+  height: 150px;
+  object-fit: cover;
+}
