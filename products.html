@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Babuu</title>
+<title>Babuu Shop</title>
 
 <style>
 body{
@@ -18,7 +18,7 @@ header{
   text-align:center;
 }
 
-/* 🔍 search */
+/* search */
 .search-box{
   text-align:center;
   padding:10px;
@@ -32,7 +32,7 @@ header{
   border:1px solid #ddd;
 }
 
-/* 🔘 filter */
+/* filter */
 .filter-box{
   display:flex;
   flex-wrap:wrap;
@@ -49,7 +49,7 @@ header{
   cursor:pointer;
 }
 
-/* 🛍 grid */
+/* product */
 #product-list{
   display:grid;
   grid-template-columns:repeat(2,1fr);
@@ -83,15 +83,41 @@ header{
   background:white;
   padding:15px;
   border-radius:15px;
-  text-align:center;
 }
 
-.back-btn{
-  margin-top:10px;
-  padding:10px;
+/* 🛒 CART */
+.cart-btn{
+  position:fixed;
+  top:10px;
+  right:10px;
+  background:#ff8fab;
+  color:white;
+  padding:10px 15px;
   border:none;
-  border-radius:10px;
-  background:#ffd1dc;
+  border-radius:999px;
+  cursor:pointer;
+}
+
+#cartBox{
+  position:fixed;
+  top:60px;
+  right:10px;
+  width:280px;
+  background:white;
+  border-radius:15px;
+  padding:10px;
+  box-shadow:0 2px 10px rgba(0,0,0,.2);
+  display:none;
+}
+
+.cart-item{
+  display:flex;
+  justify-content:space-between;
+  margin:5px 0;
+}
+
+.remove{
+  color:red;
   cursor:pointer;
 }
 </style>
@@ -103,47 +129,44 @@ header{
 <h1>🍓 Babuu Shop</h1>
 </header>
 
-<!-- 🔍 SEARCH (กลับมาแล้ว) -->
+<!-- 🛒 CART BUTTON -->
+<button class="cart-btn" onclick="toggleCart()">
+🛒 ตะกร้า (<span id="cartCount">0</span>)
+</button>
+
+<!-- 🛒 CART BOX -->
+<div id="cartBox">
+<h3>ตะกร้าสินค้า</h3>
+<div id="cartItems"></div>
+<hr>
+<p>รวม: <span id="total">0</span> บาท</p>
+</div>
+
+<!-- SEARCH -->
 <div class="search-box">
 <input type="text" id="searchInput" placeholder="ค้นหาสินค้า..." onkeyup="searchProduct()">
 </div>
 
-<!-- 🔘 FILTER -->
+<!-- FILTER -->
 <div class="filter-box">
 <button onclick="filterCategory('all')">ทั้งหมด</button>
 <button onclick="filterCategory('toon')">ตูน</button>
 <button onclick="filterCategory('decorate')">ของตกแต่ง</button>
-<button onclick="filterCategory('block')">บ็อค</button>
-<button onclick="filterCategory('ads')">เกม/ADS</button>
-<button onclick="filterCategory('effect')">Effect</button>
 <button onclick="filterCategory('bg')">BG</button>
-<button onclick="filterCategory('font')">Font</button>
 <button onclick="filterCategory('sticker')">Sticker</button>
 </div>
 
-<!-- 🛍 list -->
+<!-- PRODUCTS -->
 <div id="product-list"></div>
-
-<!-- 🔥 detail -->
-<div id="detailPage">
-  <div class="detail-box">
-    <img id="dimg" style="width:100%;border-radius:10px;">
-    <h2 id="dname"></h2>
-    <p id="dprice"></p>
-
-    <button class="back-btn" onclick="back()">
-      ⬅ ย้อนกลับ
-    </button>
-  </div>
-</div>
 
 <script>
 
 const API = "https://script.googleusercontent.com/macros/echo?user_content_key=...";
 
 let allProducts = [];
+let cart = [];
 
-/* โหลด */
+/* load */
 fetch(API)
 .then(r => r.json())
 .then(data => {
@@ -153,56 +176,75 @@ fetch(API)
 
 /* render */
 function render(list){
-  document.getElementById("detailPage").style.display = "none";
-  document.getElementById("product-list").style.display = "grid";
-
   const box = document.getElementById("product-list");
   box.innerHTML = "";
 
   list.forEach(p => {
     box.innerHTML += `
-      <div class="product" onclick="openDetail('${p.img}','${p.name}','${p.price}')">
+      <div class="product">
         <img src="${p.img}">
         <h4>${p.name}</h4>
         <p>${p.price} บาท</p>
+        <button onclick="addToCart('${p.name}',${p.price})">+ ใส่ตะกร้า</button>
       </div>
     `;
   });
+}
+
+/* add cart */
+function addToCart(name,price){
+  cart.push({name,price});
+  updateCart();
+}
+
+/* update cart */
+function updateCart(){
+  document.getElementById("cartCount").innerText = cart.length;
+
+  const box = document.getElementById("cartItems");
+  box.innerHTML = "";
+
+  let total = 0;
+
+  cart.forEach((c,i) => {
+    total += Number(c.price);
+
+    box.innerHTML += `
+      <div class="cart-item">
+        ${c.name} - ${c.price}
+        <span class="remove" onclick="removeItem(${i})">❌</span>
+      </div>
+    `;
+  });
+
+  document.getElementById("total").innerText = total;
+}
+
+/* remove */
+function removeItem(i){
+  cart.splice(i,1);
+  updateCart();
+}
+
+/* toggle cart */
+function toggleCart(){
+  const box = document.getElementById("cartBox");
+  box.style.display = box.style.display === "block" ? "none" : "block";
 }
 
 /* search */
 function searchProduct(){
   const v = document.getElementById("searchInput").value.toLowerCase();
 
-  const f = allProducts.filter(p =>
-    (p.name || "").toLowerCase().includes(v)
-  );
-
-  render(f);
+  render(allProducts.filter(p =>
+    p.name.toLowerCase().includes(v)
+  ));
 }
 
 /* filter */
 function filterCategory(cat){
-  if(cat === "all"){
-    render(allProducts);
-  } else {
-    render(allProducts.filter(p => p.category === cat));
-  }
-}
-
-/* detail */
-function openDetail(img,name,price){
-  document.getElementById("product-list").style.display = "none";
-  document.getElementById("detailPage").style.display = "block";
-
-  document.getElementById("dimg").src = img;
-  document.getElementById("dname").innerText = name;
-  document.getElementById("dprice").innerText = price + " บาท";
-}
-
-/* back */
-function back(){
-  render(allProducts);
+  if(cat === "all") render(allProducts);
+  else render(allProducts.filter(p => p.category === cat));
 }
 
 </script>
