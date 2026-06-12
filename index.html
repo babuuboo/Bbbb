@@ -1,32 +1,227 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <title>Babuu Shop</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Babuu</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#FFF6E9;
+color:#6B5B52;
+}
+
+/* HEADER */
+header{
+background:#F8D7DA;
+padding:20px;
+text-align:center;
+}
+
+header h1{
+font-size:32px;
+}
+
+/* NAV */
+nav{
+display:flex;
+justify-content:center;
+gap:10px;
+flex-wrap:wrap;
+padding:15px;
+}
+
+nav a{
+background:white;
+padding:10px 16px;
+border-radius:12px;
+text-decoration:none;
+color:#6B5B52;
+font-weight:bold;
+}
+
+/* HERO */
+.hero{
+padding:40px 20px;
+text-align:center;
+}
+
+.hero h2{
+font-size:28px;
+margin-bottom:10px;
+}
+
+.hero p{
+margin-bottom:20px;
+}
+
+.btn{
+display:inline-block;
+background:#D8F3E2;
+padding:12px 20px;
+border-radius:12px;
+text-decoration:none;
+color:#6B5B52;
+font-weight:bold;
+}
+
+/* SEARCH */
+.search-box{
+text-align:center;
+padding:10px;
+}
+
+.search-box input{
+width:90%;
+max-width:400px;
+padding:10px;
+border-radius:12px;
+border:1px solid #ddd;
+outline:none;
+}
+
+/* PRODUCTS */
+.section{
+padding:30px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:20px;
+box-shadow:0 2px 10px rgba(0,0,0,.08);
+}
+
+/* PRODUCT GRID */
+#product-list{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+margin-top:15px;
+}
+
+.product{
+background:white;
+padding:10px;
+border-radius:15px;
+cursor:pointer;
+box-shadow:0 2px 8px rgba(0,0,0,.1);
+transition:0.2s;
+text-align:center;
+}
+
+.product:hover{
+transform:scale(1.03);
+}
+
+.product img{
+width:100%;
+height:120px;
+object-fit:cover;
+border-radius:10px;
+}
+
+/* FOOTER */
+footer{
+margin-top:40px;
+padding:20px;
+text-align:center;
+background:#F8D7DA;
+}
+</style>
 </head>
 
 <body>
 
-<!-- 🟣 HEADER -->
 <header>
-  <h1>🎀 Babuu Shop</h1>
-  <p>ร้านสินค้าน่ารัก พร้อมส่ง ✨</p>
+<h1>🍓 Babuu 🍓</h1>
+<p>ยินดีต้อนรับสู่ร้านของลูกตาล</p>
 </header>
 
-<!-- 🔍 SEARCH (ใส่ไว้ก่อน เผื่ออัปเกรด) -->
-<div class="search-box">
-  <input type="text" placeholder="ค้นหาสินค้า... (ยังไม่เปิดใช้)">
-</div>
+<nav>
+<a href="#">ข้อมูลร้าน</a>
+<a href="#">สินค้า</a>
+<a href="#">บริการ</a>
+<a href="#">ติดต่อ</a>
+</nav>
 
-<!-- 🛍️ PRODUCT AREA -->
-<section>
-  <h2>🛍️ สินค้าทั้งหมด</h2>
-  <div id="product-list"></div>
+<section class="hero">
+<h2>Strawberry Milk Shop 🥛</h2>
+<p>รวมสินค้าและบริการของ Babuu</p>
+
+<a class="btn" href="#products">
+🛍️ ดูสินค้า
+</a>
 </section>
 
-<!-- SCRIPT -->
-<script src="script.js"></script>
+<!-- 🔍 SEARCH -->
+<div class="search-box">
+<input type="text" id="searchInput" placeholder="🔍 ค้นหาสินค้า..." onkeyup="searchProduct()">
+</div>
+
+<!-- 🛍️ PRODUCTS -->
+<section class="section" id="products">
+<div class="card">
+<h3>💖 สินค้าทั้งหมด</h3>
+
+<div id="product-list"></div>
+
+</div>
+</section>
+
+<footer>
+Babuu © 2026
+</footer>
+
+<script>
+const API = "https://script.google.com/macros/s/AKfycbwn5O2T57lvmM4P8log2rjs6MjJw-84pcL7lgQQRkbX96faHDjH77n9CbbmE7oQ9t_B/exec";
+
+let allProducts = [];
+
+fetch(API)
+.then(res => res.json())
+.then(data => {
+    allProducts = data;
+    renderProducts(allProducts);
+});
+
+function renderProducts(products){
+const box = document.getElementById("product-list");
+box.innerHTML = "";
+
+products.forEach(p => {
+box.innerHTML += `
+<div class="product" onclick="openDrive('${p.drive}')">
+<img src="${p.img}">
+<h4>${p.name}</h4>
+<p>${p.price} บาท</p>
+</div>
+`;
+});
+}
+
+/* 🔍 SEARCH FUNCTION */
+function searchProduct(){
+const value = document.getElementById("searchInput").value.toLowerCase();
+
+const filtered = allProducts.filter(p =>
+p.name.toLowerCase().includes(value)
+);
+
+renderProducts(filtered);
+}
+
+function openDrive(link){
+window.open(link,"_blank");
+}
+</script>
 
 </body>
 </html>
