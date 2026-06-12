@@ -7,19 +7,18 @@
 
 <style>
 body{
-  font-family:Arial,sans-serif;
+  font-family:Arial;
   background:#FFF6E9;
   margin:0;
 }
 
-/* header */
 header{
   background:#F8D7DA;
   padding:20px;
   text-align:center;
 }
 
-/* search */
+/* 🔍 search */
 .search-box{
   text-align:center;
   padding:10px;
@@ -33,7 +32,7 @@ header{
   border:1px solid #ddd;
 }
 
-/* filter */
+/* 🔘 filter */
 .filter-box{
   display:flex;
   flex-wrap:wrap;
@@ -50,7 +49,7 @@ header{
   cursor:pointer;
 }
 
-/* product grid */
+/* 🛍 grid */
 #product-list{
   display:grid;
   grid-template-columns:repeat(2,1fr);
@@ -74,7 +73,7 @@ header{
   border-radius:10px;
 }
 
-/* 🔥 DETAIL PAGE */
+/* detail */
 #detailPage{
   display:none;
   padding:20px;
@@ -85,12 +84,11 @@ header{
   padding:15px;
   border-radius:15px;
   text-align:center;
-  box-shadow:0 2px 10px rgba(0,0,0,.1);
 }
 
 .back-btn{
   margin-top:10px;
-  padding:10px 15px;
+  padding:10px;
   border:none;
   border-radius:10px;
   background:#ffd1dc;
@@ -103,8 +101,12 @@ header{
 
 <header>
 <h1>🍓 Babuu Shop</h1>
-<p>ร้านของลูกตาล</p>
 </header>
+
+<!-- 🔍 SEARCH (กลับมาแล้ว) -->
+<div class="search-box">
+<input type="text" id="searchInput" placeholder="ค้นหาสินค้า..." onkeyup="searchProduct()">
+</div>
 
 <!-- 🔘 FILTER -->
 <div class="filter-box">
@@ -119,17 +121,17 @@ header{
 <button onclick="filterCategory('sticker')">Sticker</button>
 </div>
 
-<!-- 🛍️ PRODUCT LIST -->
+<!-- 🛍 list -->
 <div id="product-list"></div>
 
-<!-- 🔥 DETAIL PAGE -->
+<!-- 🔥 detail -->
 <div id="detailPage">
   <div class="detail-box">
-    <img id="detailImg" style="width:100%;border-radius:10px;">
-    <h2 id="detailName"></h2>
-    <p id="detailPrice"></p>
+    <img id="dimg" style="width:100%;border-radius:10px;">
+    <h2 id="dname"></h2>
+    <p id="dprice"></p>
 
-    <button class="back-btn" onclick="backToList()">
+    <button class="back-btn" onclick="back()">
       ⬅ ย้อนกลับ
     </button>
   </div>
@@ -141,23 +143,23 @@ const API = "https://script.googleusercontent.com/macros/echo?user_content_key=.
 
 let allProducts = [];
 
-/* โหลดข้อมูล */
+/* โหลด */
 fetch(API)
-.then(res => res.json())
+.then(r => r.json())
 .then(data => {
   allProducts = data;
-  renderProducts(allProducts);
+  render(allProducts);
 });
 
-/* แสดงรายการสินค้า */
-function renderProducts(products){
-  document.getElementById("product-list").style.display = "grid";
+/* render */
+function render(list){
   document.getElementById("detailPage").style.display = "none";
+  document.getElementById("product-list").style.display = "grid";
 
   const box = document.getElementById("product-list");
   box.innerHTML = "";
 
-  products.forEach(p => {
+  list.forEach(p => {
     box.innerHTML += `
       <div class="product" onclick="openDetail('${p.img}','${p.name}','${p.price}')">
         <img src="${p.img}">
@@ -168,29 +170,39 @@ function renderProducts(products){
   });
 }
 
-/* 🔥 เปิดหน้า detail */
+/* search */
+function searchProduct(){
+  const v = document.getElementById("searchInput").value.toLowerCase();
+
+  const f = allProducts.filter(p =>
+    (p.name || "").toLowerCase().includes(v)
+  );
+
+  render(f);
+}
+
+/* filter */
+function filterCategory(cat){
+  if(cat === "all"){
+    render(allProducts);
+  } else {
+    render(allProducts.filter(p => p.category === cat));
+  }
+}
+
+/* detail */
 function openDetail(img,name,price){
   document.getElementById("product-list").style.display = "none";
   document.getElementById("detailPage").style.display = "block";
 
-  document.getElementById("detailImg").src = img;
-  document.getElementById("detailName").innerText = name;
-  document.getElementById("detailPrice").innerText = price + " บาท";
+  document.getElementById("dimg").src = img;
+  document.getElementById("dname").innerText = name;
+  document.getElementById("dprice").innerText = price + " บาท";
 }
 
-/* 🔙 กลับ */
-function backToList(){
-  document.getElementById("detailPage").style.display = "none";
-  document.getElementById("product-list").style.display = "grid";
-}
-
-/* หมวดหมู่ */
-function filterCategory(cat){
-  if(cat === "all"){
-    renderProducts(allProducts);
-  } else {
-    renderProducts(allProducts.filter(p => p.category === cat));
-  }
+/* back */
+function back(){
+  render(allProducts);
 }
 
 </script>
