@@ -12,7 +12,7 @@ body {
   padding: 20px;
 }
 
-/* หมวดหมู่ */
+/* ปุ่มหมวดหมู่ */
 .category-bar {
   display: flex;
   flex-wrap: wrap;
@@ -27,12 +27,10 @@ body {
   cursor: pointer;
   background: #ffd1dc;
   font-size: 13px;
-  transition: 0.2s;
 }
 
 .category-bar button:hover {
   background: #ff9bb2;
-  transform: scale(1.05);
 }
 
 /* สินค้า */
@@ -60,37 +58,21 @@ body {
 
 <h2>🛍️ Babuu Shop</h2>
 
-<!-- 🔵 หมวดหมู่ทั้งหมด -->
+<!-- ปุ่มหมวดหมู่ -->
 <div class="category-bar">
-
-<button onclick="filterProducts('all')">ทั้งหมด</button>
-
-<button onclick="filterProducts('toon')">ตูน</button>
-<button onclick="filterProducts('decorate')">ของตกแต่ง</button>
-<button onclick="filterProducts('block')">บ็อค / Block</button>
-<button onclick="filterProducts('ads')">เกม / ADS</button>
-<button onclick="filterProducts('effect')">Effect</button>
-<button onclick="filterProducts('bg')">BG / พื้นหลัง</button>
-<button onclick="filterProducts('font')">Font</button>
-<button onclick="filterProducts('form')">Form</button>
-<button onclick="filterProducts('sticker')">Sticker</button>
-<button onclick="filterProducts('base')">เบส</button>
-<button onclick="filterProducts('line')">ลายเส้น</button>
-<button onclick="filterProducts('animal')">สัตว์ / ต้าวก้อน</button>
-<button onclick="filterProducts('character')">Character (หมี)</button>
-<button onclick="filterProducts('ig')">Style IG</button>
-<button onclick="filterProducts('teach_sign')">กลุ่มสอนป้าย</button>
-<button onclick="filterProducts('teach_head')">สอนทำหัวป้าย</button>
-<button onclick="filterProducts('group')">กลุ่มรวม</button>
-<button onclick="filterProducts('room_f')">ห้อง F</button>
-<button onclick="filterProducts('course')">Course / เช่า</button>
-<button onclick="filterProducts('png')">PNG / BG / เจ้าหญิง</button>
-<button onclick="filterProducts('lottery')">หวย / เบอร์</button>
-<button onclick="filterProducts('license')">สูบ / สิทธิ์ขาด</button>
-
+  <button onclick="filterProducts('all')">ทั้งหมด</button>
+  <button onclick="filterProducts('toon')">ตูน</button>
+  <button onclick="filterProducts('decorate')">ของตกแต่ง</button>
+  <button onclick="filterProducts('block')">บ็อค / Block</button>
+  <button onclick="filterProducts('ads')">เกม / ADS</button>
+  <button onclick="filterProducts('effect')">Effect</button>
+  <button onclick="filterProducts('bg')">BG / พื้นหลัง</button>
+  <button onclick="filterProducts('font')">Font</button>
+  <button onclick="filterProducts('form')">Form</button>
+  <button onclick="filterProducts('sticker')">Sticker</button>
 </div>
 
-<!-- 🟣 สินค้าตัวอย่าง -->
+<!-- สินค้า -->
 <div class="products">
 
   <div class="product-item" data-category="toon">
@@ -99,23 +81,18 @@ body {
   </div>
 
   <div class="product-item" data-category="bg">
-    <h3>พื้นหลังสวย ๆ</h3>
+    <h3>พื้นหลัง</h3>
     <p class="price">30 บาท</p>
   </div>
 
   <div class="product-item" data-category="sticker">
-    <h3>สติ๊กเกอร์น่ารัก</h3>
+    <h3>สติ๊กเกอร์</h3>
     <p class="price">25 บาท</p>
-  </div>
-
-  <div class="product-item" data-category="character">
-    <h3>หมี Character</h3>
-    <p class="price">99 บาท</p>
   </div>
 
 </div>
 
-<!-- JS -->
+<!-- JS (สำคัญ: ต้องอยู่ก่อนปิด body) -->
 <script>
 function filterProducts(category) {
   const items = document.querySelectorAll('.product-item');
@@ -123,10 +100,13 @@ function filterProducts(category) {
   items.forEach(item => {
     if (category === 'all') {
       item.style.display = 'block';
-    } else {
-      item.style.display =
-        (item.dataset.category === category) ? 'block' : 'none';
+      return;
     }
+
+    item.style.display =
+      item.getAttribute('data-category') === category
+        ? 'block'
+        : 'none';
   });
 }
 </script>
