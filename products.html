@@ -24,6 +24,7 @@ header{
   text-align:center;
   padding:10px;
 }
+
 .search-box input{
   width:90%;
   max-width:400px;
@@ -63,6 +64,7 @@ header{
   border-radius:15px;
   text-align:center;
   box-shadow:0 2px 8px rgba(0,0,0,.1);
+  cursor:pointer;
 }
 
 .product img{
@@ -70,6 +72,29 @@ header{
   height:120px;
   object-fit:cover;
   border-radius:10px;
+}
+
+/* 🔥 DETAIL PAGE */
+#detailPage{
+  display:none;
+  padding:20px;
+}
+
+.detail-box{
+  background:white;
+  padding:15px;
+  border-radius:15px;
+  text-align:center;
+  box-shadow:0 2px 10px rgba(0,0,0,.1);
+}
+
+.back-btn{
+  margin-top:10px;
+  padding:10px 15px;
+  border:none;
+  border-radius:10px;
+  background:#ffd1dc;
+  cursor:pointer;
 }
 </style>
 </head>
@@ -81,12 +106,7 @@ header{
 <p>ร้านของลูกตาล</p>
 </header>
 
-<!-- 🔍 SEARCH -->
-<div class="search-box">
-<input type="text" id="searchInput" placeholder="ค้นหาสินค้า..." onkeyup="searchProduct()">
-</div>
-
-<!-- 🔘 FILTER (หมวดหมู่) -->
+<!-- 🔘 FILTER -->
 <div class="filter-box">
 <button onclick="filterCategory('all')">ทั้งหมด</button>
 <button onclick="filterCategory('toon')">ตูน</button>
@@ -99,16 +119,29 @@ header{
 <button onclick="filterCategory('sticker')">Sticker</button>
 </div>
 
-<!-- 🛍️ PRODUCTS -->
+<!-- 🛍️ PRODUCT LIST -->
 <div id="product-list"></div>
+
+<!-- 🔥 DETAIL PAGE -->
+<div id="detailPage">
+  <div class="detail-box">
+    <img id="detailImg" style="width:100%;border-radius:10px;">
+    <h2 id="detailName"></h2>
+    <p id="detailPrice"></p>
+
+    <button class="back-btn" onclick="backToList()">
+      ⬅ ย้อนกลับ
+    </button>
+  </div>
+</div>
 
 <script>
 
 const API = "https://script.googleusercontent.com/macros/echo?user_content_key=...";
-  
+
 let allProducts = [];
 
-/* โหลดข้อมูลจาก Google Sheets */
+/* โหลดข้อมูล */
 fetch(API)
 .then(res => res.json())
 .then(data => {
@@ -116,14 +149,17 @@ fetch(API)
   renderProducts(allProducts);
 });
 
-/* แสดงสินค้า */
+/* แสดงรายการสินค้า */
 function renderProducts(products){
+  document.getElementById("product-list").style.display = "grid";
+  document.getElementById("detailPage").style.display = "none";
+
   const box = document.getElementById("product-list");
   box.innerHTML = "";
 
   products.forEach(p => {
     box.innerHTML += `
-      <div class="product" onclick="openDrive('${p.drive}')">
+      <div class="product" onclick="openDetail('${p.img}','${p.name}','${p.price}')">
         <img src="${p.img}">
         <h4>${p.name}</h4>
         <p>${p.price} บาท</p>
@@ -132,30 +168,29 @@ function renderProducts(products){
   });
 }
 
-/* 🔍 ค้นหา */
-function searchProduct(){
-  const value = document.getElementById("searchInput").value.toLowerCase();
+/* 🔥 เปิดหน้า detail */
+function openDetail(img,name,price){
+  document.getElementById("product-list").style.display = "none";
+  document.getElementById("detailPage").style.display = "block";
 
-  const filtered = allProducts.filter(p =>
-    p.name.toLowerCase().includes(value)
-  );
-
-  renderProducts(filtered);
+  document.getElementById("detailImg").src = img;
+  document.getElementById("detailName").innerText = name;
+  document.getElementById("detailPrice").innerText = price + " บาท";
 }
 
-/* 🔘 หมวดหมู่ */
+/* 🔙 กลับ */
+function backToList(){
+  document.getElementById("detailPage").style.display = "none";
+  document.getElementById("product-list").style.display = "grid";
+}
+
+/* หมวดหมู่ */
 function filterCategory(cat){
   if(cat === "all"){
     renderProducts(allProducts);
   } else {
-    const filtered = allProducts.filter(p => p.category === cat);
-    renderProducts(filtered);
+    renderProducts(allProducts.filter(p => p.category === cat));
   }
-}
-
-/* เปิดลิงก์ Drive */
-function openDrive(link){
-  window.open(link,"_blank");
 }
 
 </script>
