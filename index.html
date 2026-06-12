@@ -7,54 +7,47 @@
 
 <style>
 body{
+  margin:0;
   font-family:Arial;
   background:#FFF6E9;
-  margin:0;
 }
 
-/* header */
-header{
-  background:#F8D7DA;
-  padding:20px;
-  text-align:center;
-}
-
-/* top bar categories */
-#catBar, #subBar{
+/* NAV */
+.nav{
   display:flex;
-  gap:6px;
   flex-wrap:wrap;
+  gap:6px;
   justify-content:center;
   padding:10px;
+  background:#F8D7DA;
+  position:sticky;
+  top:0;
+  z-index:999;
 }
 
-button{
+.nav button{
   padding:8px 12px;
   border:none;
   border-radius:999px;
-  background:#ffd1dc;
+  background:white;
   cursor:pointer;
 }
 
-/* search */
-.search-box{
-  text-align:center;
-  padding:10px;
-}
-.search-box input{
-  width:90%;
-  max-width:400px;
-  padding:10px;
-  border-radius:12px;
-  border:1px solid #ddd;
+/* PAGE */
+.page{
+  display:none;
+  padding:20px;
 }
 
-/* product */
+.page.active{
+  display:block;
+}
+
+/* PRODUCT */
 #product-list{
   display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:10px;
-  padding:15px;
 }
 
 .product{
@@ -63,7 +56,6 @@ button{
   border-radius:15px;
   text-align:center;
   box-shadow:0 2px 8px rgba(0,0,0,.1);
-  cursor:pointer;
 }
 
 .product img{
@@ -73,232 +65,147 @@ button{
   border-radius:10px;
 }
 
-/* detail */
-#detailPage{
-  display:none;
-  padding:20px;
+/* CATEGORY */
+.catBox{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-bottom:10px;
 }
 
-.detail-box{
-  background:white;
-  padding:15px;
-  border-radius:15px;
-}
-
-/* cart */
-.cart-btn{
-  position:fixed;
-  top:10px;
-  right:10px;
-  background:#ff8fab;
-  color:white;
-  padding:10px;
-  border-radius:999px;
+.catBox button{
+  padding:6px 10px;
   border:none;
+  border-radius:999px;
+  background:#ffd1dc;
   cursor:pointer;
 }
 
-#cartBox{
-  position:fixed;
-  top:60px;
-  right:10px;
-  width:280px;
-  background:white;
-  padding:10px;
-  border-radius:15px;
-  display:none;
-  box-shadow:0 2px 10px rgba(0,0,0,.2);
+/* CONTACT */
+a{
+  display:block;
+  margin:5px 0;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-<h1>🍓 Babuu Shop</h1>
-</header>
-
-<!-- 🛒 CART -->
-<button class="cart-btn" onclick="toggleCart()">
-🛒 (<span id="cartCount">0</span>)
-</button>
-
-<div id="cartBox">
-<h3>ตะกร้า</h3>
-<div id="cartItems"></div>
-<hr>
-<p>รวม: <span id="total">0</span></p>
-<button onclick="checkout()">สั่งซื้อ</button>
+<!-- NAV -->
+<div class="nav">
+<button onclick="showPage('home')">🏠 ร้านค้า</button>
+<button onclick="showPage('product')">🛍 สินค้า</button>
+<button onclick="showPage('font')">🔤 ฟอนต์</button>
+<button onclick="showPage('service')">💼 บริการ</button>
+<button onclick="showPage('contact')">📞 ติดต่อ</button>
 </div>
 
-<!-- 🔍 SEARCH -->
-<div class="search-box">
-<input type="text" id="searchInput" placeholder="ค้นหา..." onkeyup="searchProduct()">
+<!-- 🏠 HOME -->
+<div id="home" class="page active">
+<h2>🏠 หน้าร้านค้า</h2>
+<p>ยินดีต้อนรับสู่ร้าน Babuu 💖</p>
+<p>ใส่ข้อมูลร้านตรงนี้ได้เลย</p>
 </div>
-
-<!-- 🟣 CATEGORY -->
-<div id="catBar"></div>
-
-<!-- 🟣 SUBCATEGORY -->
-<div id="subBar"></div>
 
 <!-- 🛍 PRODUCT -->
+<div id="product" class="page">
+
+<h2>🛍 สินค้า</h2>
+
+<div class="catBox" id="catBox"></div>
+
 <div id="product-list"></div>
+
+</div>
+
+<!-- 🔤 FONT -->
+<div id="font" class="page">
+<h2>🔤 ฟอนต์</h2>
+<p>รวมฟอนต์ทั้งหมด</p>
+</div>
+
+<!-- 💼 SERVICE -->
+<div id="service" class="page">
+<h2>💼 บริการ</h2>
+<p>รายละเอียดบริการ</p>
+</div>
+
+<!-- 📞 CONTACT -->
+<div id="contact" class="page">
+<h2>📞 ติดต่อ</h2>
+
+<a href="#">Instagram</a>
+<a href="#">TikTok</a>
+<a href="#">LINE</a>
+<a href="#">Facebook</a>
+</div>
 
 <script>
 
-const API = "https://script.googleusercontent.com/macros/echo?user_content_key=...";
+/* =======================
+   PAGE SWITCH
+======================= */
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>{
+    p.classList.remove('active');
+  });
+  document.getElementById(id).classList.add('active');
+}
+
+/* =======================
+   GOOGLE SHEET API
+======================= */
+const API = "https://script.google.com/macros/s/AKfycbzPF9ctkc9qCLYY53vqfAhHaJ9crGmevjflKzC063ZRUw1taeiNI6KrUQ-bOOp4_Sv6/exec";
 
 let allProducts = [];
-let cart = [];
-let currentCat = null;
-let currentSub = null;
+let currentCat = "all";
 
-/* load */
 fetch(API)
-.then(r => r.json())
-.then(data => {
+.then(res=>res.json())
+.then(data=>{
   allProducts = data;
   renderCategories();
   render(allProducts);
 });
 
-/* 🟣 category */
+/* =======================
+   CATEGORY
+======================= */
 function renderCategories(){
-  const cats = [...new Set(allProducts.map(p => p.category))];
+  const cats = ["all", ...new Set(allProducts.map(p=>p.category))];
 
-  document.getElementById("catBar").innerHTML =
-    `<button onclick="setCat(null)">ทั้งหมด</button>` +
-    cats.map(c =>
-      `<button onclick="setCat('${c}')">${c}</button>`
-    ).join("");
+  document.getElementById("catBox").innerHTML =
+    cats.map(c=>`
+      <button onclick="filterCat('${c}')">${c}</button>
+    `).join("");
 }
 
-/* 🟣 subcategory */
-function renderSub(){
-  if(!currentCat){
-    document.getElementById("subBar").innerHTML = "";
-    return;
+function filterCat(cat){
+  currentCat = cat;
+
+  if(cat === "all"){
+    render(allProducts);
+  }else{
+    render(allProducts.filter(p=>p.category === cat));
   }
-
-  const subs = [...new Set(
-    allProducts
-    .filter(p => p.category === currentCat)
-    .map(p => p.subcategory)
-  )];
-
-  document.getElementById("subBar").innerHTML =
-    `<button onclick="setSub(null)">ทั้งหมด</button>` +
-    subs.map(s =>
-      `<button onclick="setSub('${s}')">${s}</button>`
-    ).join("");
 }
 
-/* set cat */
-function setCat(c){
-  currentCat = c;
-  currentSub = null;
-  renderSub();
-  filter();
-}
-
-/* set sub */
-function setSub(s){
-  currentSub = s;
-  filter();
-}
-
-/* filter */
-function filter(){
-  let list = allProducts;
-
-  if(currentCat){
-    list = list.filter(p => p.category === currentCat);
-  }
-
-  if(currentSub){
-    list = list.filter(p => p.subcategory === currentSub);
-  }
-
-  render(list);
-}
-
-/* render */
+/* =======================
+   PRODUCT
+======================= */
 function render(list){
   const box = document.getElementById("product-list");
   box.innerHTML = "";
 
-  list.forEach(p => {
+  list.forEach(p=>{
     box.innerHTML += `
       <div class="product">
         <img src="${p.img}">
         <h4>${p.name}</h4>
-        <p>${p.price}</p>
-        <button onclick="addCart('${p.name}',${p.price})">+ ตะกร้า</button>
+        <p>${p.price} บาท</p>
       </div>
     `;
   });
-}
-
-/* search */
-function searchProduct(){
-  const v = document.getElementById("searchInput").value.toLowerCase();
-
-  render(allProducts.filter(p =>
-    p.name.toLowerCase().includes(v)
-  ));
-}
-
-/* cart */
-function addCart(n,p){
-  cart.push({n,p});
-  updateCart();
-}
-
-function updateCart(){
-  document.getElementById("cartCount").innerText = cart.length;
-
-  let total = 0;
-  const box = document.getElementById("cartItems");
-  box.innerHTML = "";
-
-  cart.forEach((c,i)=>{
-    total += c.p;
-
-    box.innerHTML += `
-      <div>
-        ${c.n} - ${c.p}
-        <span onclick="removeItem(${i})">❌</span>
-      </div>
-    `;
-  });
-
-  document.getElementById("total").innerText = total;
-}
-
-function removeItem(i){
-  cart.splice(i,1);
-  updateCart();
-}
-
-function toggleCart(){
-  const b = document.getElementById("cartBox");
-  b.style.display = b.style.display==="block"?"none":"block";
-}
-
-/* checkout */
-function checkout(){
-  let text = "🛒 Order\n\n";
-  let total = 0;
-
-  cart.forEach(c=>{
-    text += `${c.n} - ${c.p}\n`;
-    total += c.p;
-  });
-
-  text += `\nรวม: ${total}`;
-
-  window.open("https://line.me/R/oaMessage/" + encodeURIComponent(text));
 }
 
 </script>
