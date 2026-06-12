@@ -229,3 +229,21 @@ window.open(link,"_blank");
 
 </body>
 </html>
+
+
+<script>
+function filterProducts(category) {
+  const items = document.querySelectorAll('.product-item');
+
+  items.forEach(item => {
+    if (category === 'all') {
+      item.style.display = 'block';
+    } else {
+      item.style.display =
+        item.getAttribute('data-category') === category
+          ? 'block'
+          : 'none';
+    }
+  });
+}
+</script>
