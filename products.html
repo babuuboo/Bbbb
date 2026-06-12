@@ -6,14 +6,9 @@
 <title>Babuu Products</title>
 
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
 body{
+margin:0;
+font-family:Arial;
 background:#FFF6E9;
 color:#6B5B52;
 }
@@ -24,24 +19,7 @@ padding:20px;
 text-align:center;
 }
 
-nav{
-display:flex;
-justify-content:center;
-gap:10px;
-flex-wrap:wrap;
-padding:15px;
-}
-
-nav a{
-background:white;
-padding:10px 16px;
-border-radius:12px;
-text-decoration:none;
-color:#6B5B52;
-font-weight:bold;
-}
-
-/* 🔵 FILTER */
+/* 🔥 FILTER */
 .filter-box{
 display:flex;
 gap:8px;
@@ -60,16 +38,12 @@ cursor:pointer;
 font-weight:bold;
 }
 
-.filter-box button:hover{
-background:#FFD6E8;
-}
-
-/* 🟣 PRODUCT GRID */
+/* 🟢 PRODUCT */
 #product-list{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
 gap:15px;
-padding:20px;
+padding:15px;
 }
 
 .card{
@@ -77,48 +51,27 @@ background:white;
 padding:15px;
 border-radius:15px;
 text-align:center;
-box-shadow:0 2px 8px rgba(0,0,0,0.08);
+box-shadow:0 2px 8px rgba(0,0,0,0.1);
 cursor:pointer;
-transition:0.2s;
-}
-
-.card:hover{
-transform:scale(1.03);
 }
 
 .card img{
 width:100%;
-height:140px;
+height:120px;
 object-fit:cover;
 border-radius:10px;
 margin-bottom:10px;
 }
-
-footer{
-margin-top:40px;
-padding:20px;
-text-align:center;
-background:#F8D7DA;
-}
 </style>
-
 </head>
 
 <body>
 
 <header>
-<h1>🛍️ Products</h1>
-<p>หมวดหมู่สินค้าของ Babuu</p>
+<h1>🛍️ Babuu Products</h1>
 </header>
 
-<nav>
-<a href="index.html">🏠 Home</a>
-<a href="about.html">ℹ️ About</a>
-<a href="service.html">🛠️ Services</a>
-<a href="contact.html">📱 Contact</a>
-</nav>
-
-<!-- 🔥 FILTER -->
+<!-- 🔥 หมวดหมู่ -->
 <div class="filter-box">
 <button onclick="filterCategory('all')">ทั้งหมด</button>
 <button onclick="filterCategory('ตูน')">ตูน</button>
@@ -126,38 +79,23 @@ background:#F8D7DA;
 <button onclick="filterCategory('บ็อค / Block')">บ็อค / Block</button>
 <button onclick="filterCategory('เกม / ADS')">เกม / ADS</button>
 <button onclick="filterCategory('Effect')">Effect</button>
-<button onclick="filterCategory('BG / พื้นหลัง')">BG / พื้นหลัง</button>
+<button onclick="filterCategory('BG / พื้นหลัง')">BG</button>
 <button onclick="filterCategory('Font')">Font</button>
-<button onclick="filterCategory('Form')">Form</button>
 <button onclick="filterCategory('Sticker')">Sticker</button>
-<button onclick="filterCategory('เบส')">เบส</button>
-<button onclick="filterCategory('ลายเส้น')">ลายเส้น</button>
-<button onclick="filterCategory('สัตว์ / ต้าวก้อน')">สัตว์ / ต้าวก้อน</button>
 <button onclick="filterCategory('Character (หมี)')">Character 🐻</button>
 <button onclick="filterCategory('Style IG')">Style IG</button>
-<button onclick="filterCategory('กลุ่มสอนป้าย')">กลุ่มสอนป้าย</button>
-<button onclick="filterCategory('สอนทำหัวป้าย')">สอนทำหัวป้าย</button>
-<button onclick="filterCategory('กลุ่มรวม')">กลุ่มรวม</button>
-<button onclick="filterCategory('ห้อง F')">ห้อง F</button>
-<button onclick="filterCategory('Course / เช่า')">Course / เช่า</button>
-<button onclick="filterCategory('PNG / BG / เจ้าหญิง')">PNG / BG / เจ้าหญิง</button>
-<button onclick="filterCategory('หวย / เบอร์')">หวย / เบอร์</button>
-<button onclick="filterCategory('สูบ / สิทธิ์ขาด')">สูบ / สิทธิ์ขาด</button>
+<button onclick="filterCategory('Course / เช่า')">Course</button>
 </div>
 
-<!-- 🟢 PRODUCT AREA -->
+<!-- 🟢 สินค้า -->
 <div id="product-list"></div>
 
-<footer>
-Babuu © 2026
-</footer>
-
-<!-- ⚙️ SCRIPT -->
 <script>
 const API = "https://script.google.com/macros/s/AKfycbwn5O2T57lvmM4P8log2rjs6MjJw-84pcL7lgQQRkbX96faHDjH77n9CbbmE7oQ9t_B/exec";
 
 let allProducts = [];
 
+/* 📦 โหลดสินค้า */
 fetch(API)
 .then(res => res.json())
 .then(data => {
@@ -165,6 +103,7 @@ fetch(API)
     renderProducts(allProducts);
 });
 
+/* 🧩 แสดงสินค้า */
 function renderProducts(products){
 const box = document.getElementById("product-list");
 box.innerHTML = "";
@@ -195,6 +134,7 @@ p.category === cat
 renderProducts(filtered);
 }
 
+/* 🔗 เปิดลิงก์ */
 function openDrive(link){
 window.open(link,"_blank");
 }
