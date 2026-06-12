@@ -12,6 +12,27 @@ body{
   margin:0;
 }
 
+/* NAVBAR */
+.navbar{
+  position:sticky;
+  top:0;
+  z-index:999;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:#F8D7DA;
+  padding:10px;
+}
+
+.navbar button{
+  padding:8px 12px;
+  border:none;
+  border-radius:999px;
+  background:white;
+  cursor:pointer;
+}
+
+/* header */
 header{
   background:#F8D7DA;
   padding:20px;
@@ -73,22 +94,10 @@ header{
   border-radius:10px;
 }
 
-/* detail */
-#detailPage{
-  display:none;
-  padding:20px;
-}
-
-.detail-box{
-  background:white;
-  padding:15px;
-  border-radius:15px;
-}
-
 /* 🛒 CART */
 .cart-btn{
   position:fixed;
-  top:10px;
+  top:60px;
   right:10px;
   background:#ff8fab;
   color:white;
@@ -96,11 +105,12 @@ header{
   border:none;
   border-radius:999px;
   cursor:pointer;
+  z-index:999;
 }
 
 #cartBox{
   position:fixed;
-  top:60px;
+  top:110px;
   right:10px;
   width:280px;
   background:white;
@@ -125,13 +135,20 @@ header{
 
 <body>
 
+<!-- 🟣 NAVBAR -->
+<div class="navbar">
+  <button onclick="goHome()">🏠 หน้าแรก</button>
+  <b>🍓 Babuu Shop</b>
+  <button onclick="toggleCart()">🛒 ตะกร้า</button>
+</div>
+
 <header>
-<h1>🍓 Babuu Shop</h1>
+<p>ร้านของลูกตาล 💖</p>
 </header>
 
 <!-- 🛒 CART BUTTON -->
-<button class="cart-btn" onclick="toggleCart()">
-🛒 ตะกร้า (<span id="cartCount">0</span>)
+<button class="cart-btn">
+🛒 (<span id="cartCount">0</span>)
 </button>
 
 <!-- 🛒 CART BOX -->
@@ -162,7 +179,7 @@ header{
 <script>
 
 const API = "https://script.google.com/macros/s/AKfycbzPF9ctkc9qCLYY53vqfAhHaJ9crGmevjflKzC063ZRUw1taeiNI6KrUQ-bOOp4_Sv6/exec";
-  
+
 let allProducts = [];
 let cart = [];
 
@@ -173,6 +190,12 @@ fetch(API)
   allProducts = data;
   render(allProducts);
 });
+
+/* 🏠 กลับหน้าแรก */
+function goHome(){
+  document.getElementById("searchInput").value = "";
+  render(allProducts);
+}
 
 /* render */
 function render(list){
@@ -185,19 +208,20 @@ function render(list){
         <img src="${p.img}">
         <h4>${p.name}</h4>
         <p>${p.price} บาท</p>
-        <button onclick="addToCart('${p.name}',${p.price})">+ ใส่ตะกร้า</button>
+        <button onclick="addToCart('${p.name}',${p.price})">
+          + ใส่ตะกร้า
+        </button>
       </div>
     `;
   });
 }
 
-/* add cart */
+/* cart */
 function addToCart(name,price){
   cart.push({name,price});
   updateCart();
 }
 
-/* update cart */
 function updateCart(){
   document.getElementById("cartCount").innerText = cart.length;
 
@@ -220,13 +244,11 @@ function updateCart(){
   document.getElementById("total").innerText = total;
 }
 
-/* remove */
 function removeItem(i){
   cart.splice(i,1);
   updateCart();
 }
 
-/* toggle cart */
 function toggleCart(){
   const box = document.getElementById("cartBox");
   box.style.display = box.style.display === "block" ? "none" : "block";
