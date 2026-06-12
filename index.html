@@ -6,134 +6,70 @@
 <title>Babuu</title>
 
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
 body{
-background:#FFF6E9;
-color:#6B5B52;
+  font-family:Arial,sans-serif;
+  background:#FFF6E9;
+  margin:0;
 }
 
-/* HEADER */
+/* header */
 header{
-background:#F8D7DA;
-padding:20px;
-text-align:center;
+  background:#F8D7DA;
+  padding:20px;
+  text-align:center;
 }
 
-header h1{
-font-size:32px;
-}
-
-/* NAV */
-nav{
-display:flex;
-justify-content:center;
-gap:10px;
-flex-wrap:wrap;
-padding:15px;
-}
-
-nav a{
-background:white;
-padding:10px 16px;
-border-radius:12px;
-text-decoration:none;
-color:#6B5B52;
-font-weight:bold;
-}
-
-/* HERO */
-.hero{
-padding:40px 20px;
-text-align:center;
-}
-
-.hero h2{
-font-size:28px;
-margin-bottom:10px;
-}
-
-.hero p{
-margin-bottom:20px;
-}
-
-.btn{
-display:inline-block;
-background:#D8F3E2;
-padding:12px 20px;
-border-radius:12px;
-text-decoration:none;
-color:#6B5B52;
-font-weight:bold;
-}
-
-/* SEARCH */
+/* search */
 .search-box{
-text-align:center;
-padding:10px;
+  text-align:center;
+  padding:10px;
 }
-
 .search-box input{
-width:90%;
-max-width:400px;
-padding:10px;
-border-radius:12px;
-border:1px solid #ddd;
-outline:none;
+  width:90%;
+  max-width:400px;
+  padding:10px;
+  border-radius:12px;
+  border:1px solid #ddd;
 }
 
-/* PRODUCTS */
-.section{
-padding:30px;
+/* filter */
+.filter-box{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  justify-content:center;
+  padding:10px;
 }
 
-.card{
-background:white;
-padding:20px;
-border-radius:20px;
-box-shadow:0 2px 10px rgba(0,0,0,.08);
+.filter-box button{
+  padding:8px 10px;
+  border:none;
+  border-radius:999px;
+  background:#ffd1dc;
+  cursor:pointer;
 }
 
-/* PRODUCT GRID */
+/* product grid */
 #product-list{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:12px;
-margin-top:15px;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  padding:15px;
 }
 
 .product{
-background:white;
-padding:10px;
-border-radius:15px;
-cursor:pointer;
-box-shadow:0 2px 8px rgba(0,0,0,.1);
-transition:0.2s;
-text-align:center;
-}
-
-.product:hover{
-transform:scale(1.03);
+  background:white;
+  padding:10px;
+  border-radius:15px;
+  text-align:center;
+  box-shadow:0 2px 8px rgba(0,0,0,.1);
 }
 
 .product img{
-width:100%;
-height:120px;
-object-fit:cover;
-border-radius:10px;
-}
-
-/* FOOTER */
-footer{
-margin-top:40px;
-padding:20px;
-text-align:center;
-background:#F8D7DA;
+  width:100%;
+  height:120px;
+  object-fit:cover;
+  border-radius:10px;
 }
 </style>
 </head>
@@ -141,109 +77,88 @@ background:#F8D7DA;
 <body>
 
 <header>
-<h1>🍓 Babuu 🍓</h1>
-<p>ยินดีต้อนรับสู่ร้านของลูกตาล</p>
+<h1>🍓 Babuu Shop</h1>
+<p>ร้านของลูกตาล</p>
 </header>
-
-<nav>
-<a href="#">ข้อมูลร้าน</a>
-<a href="#">สินค้า</a>
-<a href="#">บริการ</a>
-<a href="#">ติดต่อ</a>
-</nav>
-
-<section class="hero">
-<h2>Strawberry Milk Shop 🥛</h2>
-<p>รวมสินค้าและบริการของ Babuu</p>
-
-<a class="btn" href="#products">
-🛍️ ดูสินค้า
-</a>
-</section>
 
 <!-- 🔍 SEARCH -->
 <div class="search-box">
-<input type="text" id="searchInput" placeholder="🔍 ค้นหาสินค้า..." onkeyup="searchProduct()">
+<input type="text" id="searchInput" placeholder="ค้นหาสินค้า..." onkeyup="searchProduct()">
+</div>
+
+<!-- 🔘 FILTER (หมวดหมู่) -->
+<div class="filter-box">
+<button onclick="filterCategory('all')">ทั้งหมด</button>
+<button onclick="filterCategory('toon')">ตูน</button>
+<button onclick="filterCategory('decorate')">ของตกแต่ง</button>
+<button onclick="filterCategory('block')">บ็อค</button>
+<button onclick="filterCategory('ads')">เกม/ADS</button>
+<button onclick="filterCategory('effect')">Effect</button>
+<button onclick="filterCategory('bg')">BG</button>
+<button onclick="filterCategory('font')">Font</button>
+<button onclick="filterCategory('sticker')">Sticker</button>
 </div>
 
 <!-- 🛍️ PRODUCTS -->
-<section class="section" id="products">
-<div class="card">
-<h3>💖 สินค้าทั้งหมด</h3>
-
 <div id="product-list"></div>
 
-</div>
-</section>
-
-    <div class="filter-box">
-  <button onclick="filterCategory('all')">ทั้งหมด</button>
-    </div>
-
-<footer>
-Babuu © 2026
-</footer>
-
 <script>
-const API = "https://script.google.com/macros/s/AKfycbwn5O2T57lvmM4P8log2rjs6MjJw-84pcL7lgQQRkbX96faHDjH77n9CbbmE7oQ9t_B/exec";
+
+const API = "https://script.google.com/macros/s/AKfycbzEoCGg-68R6wRDSOIX6kfIS5Zo-BbayG9jcLyDn7NvoJZfFq8mjfng_rafyqTvAm4/exec";
 
 let allProducts = [];
 
+/* โหลดข้อมูลจาก Google Sheets */
 fetch(API)
 .then(res => res.json())
 .then(data => {
-    allProducts = data;
-    renderProducts(allProducts);
+  allProducts = data;
+  renderProducts(allProducts);
 });
 
+/* แสดงสินค้า */
 function renderProducts(products){
-const box = document.getElementById("product-list");
-box.innerHTML = "";
+  const box = document.getElementById("product-list");
+  box.innerHTML = "";
 
-products.forEach(p => {
-box.innerHTML += `
-<div class="product" onclick="openDrive('${p.drive}')">
-<img src="${p.img}">
-<h4>${p.name}</h4>
-<p>${p.price} บาท</p>
-</div>
-`;
-});
+  products.forEach(p => {
+    box.innerHTML += `
+      <div class="product" onclick="openDrive('${p.drive}')">
+        <img src="${p.img}">
+        <h4>${p.name}</h4>
+        <p>${p.price} บาท</p>
+      </div>
+    `;
+  });
 }
 
-/* 🔍 SEARCH FUNCTION */
+/* 🔍 ค้นหา */
 function searchProduct(){
-const value = document.getElementById("searchInput").value.toLowerCase();
+  const value = document.getElementById("searchInput").value.toLowerCase();
 
-const filtered = allProducts.filter(p =>
-p.name.toLowerCase().includes(value)
-);
+  const filtered = allProducts.filter(p =>
+    p.name.toLowerCase().includes(value)
+  );
 
-renderProducts(filtered);
+  renderProducts(filtered);
 }
 
+/* 🔘 หมวดหมู่ */
+function filterCategory(cat){
+  if(cat === "all"){
+    renderProducts(allProducts);
+  } else {
+    const filtered = allProducts.filter(p => p.category === cat);
+    renderProducts(filtered);
+  }
+}
+
+/* เปิดลิงก์ Drive */
 function openDrive(link){
-window.open(link,"_blank");
+  window.open(link,"_blank");
 }
+
 </script>
 
 </body>
 </html>
-
-
-<script>
-function filterProducts(category) {
-  const items = document.querySelectorAll('.product-item');
-
-  items.forEach(item => {
-    if (category === 'all') {
-      item.style.display = 'block';
-    } else {
-      item.style.display =
-        item.getAttribute('data-category') === category
-          ? 'block'
-          : 'none';
-    }
-  });
-}
-</script>
