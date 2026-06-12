@@ -1,112 +1,35 @@
 <!DOCTYPE html>
-<html lang="th">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>Babuu Shop</title>
-
-<style>
-body {
-  font-family: sans-serif;
-  background: #fff7fb;
-  margin: 0;
-  padding: 20px;
-}
-
-/* ปุ่มหมวดหมู่ */
-.category-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 20px;
-}
-
-.category-bar button {
-  padding: 8px 12px;
-  border: none;
-  border-radius: 999px;
-  cursor: pointer;
-  background: #ffd1dc;
-  font-size: 13px;
-}
-
-.category-bar button:hover {
-  background: #ff9bb2;
-}
-
-/* สินค้า */
-.products {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 15px;
-}
-
-.product-item {
-  background: white;
-  border-radius: 15px;
-  padding: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-}
-
-.price {
-  color: #ff4d6d;
-  font-weight: bold;
-}
-</style>
+<title>Test Shop</title>
 </head>
 
 <body>
 
-<h2>🛍️ Babuu Shop</h2>
+<h2>ดูสินค้า</h2>
 
-<!-- ปุ่มหมวดหมู่ -->
-<div class="category-bar">
-  <button onclick="filterProducts('all')">ทั้งหมด</button>
-  <button onclick="filterProducts('toon')">ตูน</button>
-  <button onclick="filterProducts('decorate')">ของตกแต่ง</button>
-  <button onclick="filterProducts('block')">บ็อค / Block</button>
-  <button onclick="filterProducts('ads')">เกม / ADS</button>
-  <button onclick="filterProducts('effect')">Effect</button>
-  <button onclick="filterProducts('bg')">BG / พื้นหลัง</button>
-  <button onclick="filterProducts('font')">Font</button>
-  <button onclick="filterProducts('form')">Form</button>
-  <button onclick="filterProducts('sticker')">Sticker</button>
-</div>
+<!-- ปุ่ม -->
+<button onclick="show('all')">ทั้งหมด</button>
+<button onclick="show('toon')">ตูน</button>
+
+<hr>
 
 <!-- สินค้า -->
-<div class="products">
+<div id="p1" data-cat="toon">สินค้า ตูน 1</div>
+<div id="p2" data-cat="toon">สินค้า ตูน 2</div>
+<div id="p3" data-cat="bg">สินค้า BG</div>
 
-  <div class="product-item" data-category="toon">
-    <h3>ตัวอย่างตูน</h3>
-    <p class="price">50 บาท</p>
-  </div>
-
-  <div class="product-item" data-category="bg">
-    <h3>พื้นหลัง</h3>
-    <p class="price">30 บาท</p>
-  </div>
-
-  <div class="product-item" data-category="sticker">
-    <h3>สติ๊กเกอร์</h3>
-    <p class="price">25 บาท</p>
-  </div>
-
-</div>
-
-<!-- JS (สำคัญ: ต้องอยู่ก่อนปิด body) -->
 <script>
-function filterProducts(category) {
-  const items = document.querySelectorAll('.product-item');
+function show(cat){
+  const items = document.querySelectorAll('[data-cat]');
 
-  items.forEach(item => {
-    if (category === 'all') {
-      item.style.display = 'block';
-      return;
+  items.forEach(i => {
+    if(cat === 'all'){
+      i.style.display = 'block';
+    } else {
+      i.style.display = (i.getAttribute('data-cat') === cat) ? 'block' : 'none';
     }
-
-    item.style.display =
-      item.getAttribute('data-category') === category
-        ? 'block'
-        : 'none';
   });
 }
 </script>
