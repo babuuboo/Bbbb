@@ -1,164 +1,108 @@
-<!DOCTYPE html>
-<html lang="th">
+<!DOCTYPE html><html lang="th">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Babuu</title>
+<title>Babuu</title><style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
 
-<style>
 body{
-  font-family:Arial,sans-serif;
-  background:#FFF6E9;
-  margin:0;
+background:#FFF6E9;
+color:#6B5B52;
 }
 
-/* header */
 header{
-  background:#F8D7DA;
-  padding:20px;
-  text-align:center;
+background:#F8D7DA;
+padding:20px;
+text-align:center;
 }
 
-/* search */
-.search-box{
-  text-align:center;
-  padding:10px;
-}
-.search-box input{
-  width:90%;
-  max-width:400px;
-  padding:10px;
-  border-radius:12px;
-  border:1px solid #ddd;
+header h1{
+font-size:32px;
 }
 
-/* filter */
-.filter-box{
-  display:flex;
-  flex-wrap:wrap;
-  gap:6px;
-  justify-content:center;
-  padding:10px;
+nav{
+display:flex;
+justify-content:center;
+gap:10px;
+flex-wrap:wrap;
+padding:15px;
 }
 
-.filter-box button{
-  padding:8px 10px;
-  border:none;
-  border-radius:999px;
-  background:#ffd1dc;
-  cursor:pointer;
+nav a{
+background:white;
+padding:10px 16px;
+border-radius:12px;
+text-decoration:none;
+color:#6B5B52;
+font-weight:bold;
 }
 
-/* product grid */
-#product-list{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-  padding:15px;
+.hero{
+padding:50px 20px;
+text-align:center;
 }
 
-.product{
-  background:white;
-  padding:10px;
-  border-radius:15px;
-  text-align:center;
-  box-shadow:0 2px 8px rgba(0,0,0,.1);
+.hero h2{
+font-size:28px;
+margin-bottom:10px;
 }
 
-.product img{
-  width:100%;
-  height:120px;
-  object-fit:cover;
-  border-radius:10px;
-}
-</style>
-</head>
-
-<body>
-
-<header>
-<h1>🍓 Babuu Shop</h1>
-<p>ร้านของลูกตาล</p>
-</header>
-
-<!-- 🔍 SEARCH -->
-<div class="search-box">
-<input type="text" id="searchInput" placeholder="ค้นหาสินค้า..." onkeyup="searchProduct()">
-</div>
-
-<!-- 🔘 FILTER (หมวดหมู่) -->
-<div class="filter-box">
-<button onclick="filterCategory('all')">ทั้งหมด</button>
-<button onclick="filterCategory('toon')">ตูน</button>
-<button onclick="filterCategory('decorate')">ของตกแต่ง</button>
-<button onclick="filterCategory('block')">บ็อค</button>
-<button onclick="filterCategory('ads')">เกม/ADS</button>
-<button onclick="filterCategory('effect')">Effect</button>
-<button onclick="filterCategory('bg')">BG</button>
-<button onclick="filterCategory('font')">Font</button>
-<button onclick="filterCategory('sticker')">Sticker</button>
-</div>
-
-<!-- 🛍️ PRODUCTS -->
-<div id="product-list"></div>
-
-<script>
-
-const API = "https://script.google.com/macros/s/AKfycbzEoCGg-68R6wRDSOIX6kfIS5Zo-BbayG9jcLyDn7NvoJZfFq8mjfng_rafyqTvAm4/exec";
-
-let allProducts = [];
-
-/* โหลดข้อมูลจาก Google Sheets */
-fetch(API)
-.then(res => res.json())
-.then(data => {
-  allProducts = data;
-  renderProducts(allProducts);
-});
-
-/* แสดงสินค้า */
-function renderProducts(products){
-  const box = document.getElementById("product-list");
-  box.innerHTML = "";
-
-  products.forEach(p => {
-    box.innerHTML += `
-      <div class="product" onclick="openDrive('${p.drive}')">
-        <img src="${p.img}">
-        <h4>${p.name}</h4>
-        <p>${p.price} บาท</p>
-      </div>
-    `;
-  });
+.hero p{
+margin-bottom:20px;
 }
 
-/* 🔍 ค้นหา */
-function searchProduct(){
-  const value = document.getElementById("searchInput").value.toLowerCase();
-
-  const filtered = allProducts.filter(p =>
-    p.name.toLowerCase().includes(value)
-  );
-
-  renderProducts(filtered);
+.btn{
+display:inline-block;
+background:#D8F3E2;
+padding:12px 20px;
+border-radius:12px;
+text-decoration:none;
+color:#6B5B52;
+font-weight:bold;
 }
 
-/* 🔘 หมวดหมู่ */
-function filterCategory(cat){
-  if(cat === "all"){
-    renderProducts(allProducts);
-  } else {
-    const filtered = allProducts.filter(p => p.category === cat);
-    renderProducts(filtered);
-  }
+.section{
+padding:30px;
 }
 
-/* เปิดลิงก์ Drive */
-function openDrive(link){
-  window.open(link,"_blank");
+.card{
+background:white;
+padding:20px;
+border-radius:20px;
+box-shadow:0 2px 10px rgba(0,0,0,.08);
 }
 
-</script>
-
-</body>
+footer{
+margin-top:40px;
+padding:20px;
+text-align:center;
+background:#F8D7DA;
+}
+</style></head><body><header>
+<h1>🍓 Babuu 🍓</h1>
+<p>ยินดีต้อนรับสู่ร้านของลูกตาล</p>
+</header><nav>
+<a href="about.html">ข้อมูลร้าน</a>
+<a href="products.html">สินค้า</a>
+<a href="service.html">บริการ</a>
+<a href="contact.html">ติดต่อ</a>
+</nav><section class="hero">
+<h2>Strawberry Milk Shop 🥛</h2>
+<p>รวมสินค้าและบริการของ Babuu</p><a class="btn" href="products.html">
+🛍️ ดูสินค้า
+</a>
+</section><section class="section">
+<div class="card">
+<h3>💖 เกี่ยวกับ Babuu</h3><p>
+เว็บร้านค้าสไตล์หวานละมุน
+รวมสินค้า บริการ และช่องทางติดต่อไว้ในที่เดียว
+</p></div>
+</section><footer>
+Babuu © 2026
+</footer></body>
 </html>
