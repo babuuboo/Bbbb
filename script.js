@@ -1,4 +1,4 @@
-const API = "https://script.google.com/macros/s/AKfycbyCmWc1544C4Nsm_sPT7HszDoNkQeEVU0UG8TvtYtwiJMtEZ_4kGTw-7hMFNg_TVVZHZw/exec";
+const API = "https://script.google.com/macros/s/AKfycbwn5O2T57lvmM4P8log2rjs6MjJw-84pcL7lgQQRkbX96faHDjH77n9CbbmE7oQ9t_B/exec";
 
 fetch(API)
   .then(res => res.json())
@@ -6,13 +6,12 @@ fetch(API)
 
     const box = document.getElementById("product-list");
 
-    // เรียงลำดับ (ถ้ามี order ในชีต)
     data.sort((a, b) => (a.order || 0) - (b.order || 0));
 
     data.forEach(p => {
       box.innerHTML += `
         <div class="product" onclick="openDrive('${p.drive}')">
-          <img src="${p.img}" alt="${p.name}">
+          <img src="${p.img}">
           <h3>${p.name}</h3>
           <p>${p.price} บาท</p>
         </div>
@@ -20,9 +19,7 @@ fetch(API)
     });
 
   })
-  .catch(err => {
-    console.log("โหลดสินค้าไม่สำเร็จ:", err);
-  });
+  .catch(err => console.log(err));
 
 function openDrive(link) {
   window.open(link, "_blank");
