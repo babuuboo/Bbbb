@@ -36,3 +36,21 @@ h1 {
   height: 150px;
   object-fit: cover;
 }
+
+.filter-box{
+display:flex;
+gap:8px;
+overflow-x:auto;
+padding:10px;
+white-space:nowrap;
+}
+
+.filter-box button{
+flex:0 0 auto;
+padding:8px 12px;
+border:none;
+border-radius:12px;
+background:white;
+cursor:pointer;
+font-weight:bold;
+}
