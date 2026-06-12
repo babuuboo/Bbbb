@@ -1,94 +1,135 @@
-<header>...</header>
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>Babuu Shop</title>
 
-<nav>...</nav>
+<style>
+body {
+  font-family: sans-serif;
+  background: #fff7fb;
+  margin: 0;
+  padding: 20px;
+}
 
-<!-- 🔥 FILTER ต้องอยู่นอก card -->
-<div class="filter-box">
-  <button onclick="filterCategory('all')">ทั้งหมด</button>
-  <button onclick="filterCategory('ตูน')">ตูน</button>
-  <button onclick="filterCategory('ของตกแต่ง')">ของตกแต่ง</button>
-</div>
+/* หมวดหมู่ */
+.category-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
 
-<!-- 🛍️ PRODUCT -->
-<div id="product-list"></div>
+.category-bar button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  background: #ffd1dc;
+  font-size: 13px;
+  transition: 0.2s;
+}
+
+.category-bar button:hover {
+  background: #ff9bb2;
+  transform: scale(1.05);
+}
+
+/* สินค้า */
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 15px;
+}
+
+.product-item {
+  background: white;
+  border-radius: 15px;
+  padding: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.price {
+  color: #ff4d6d;
+  font-weight: bold;
+}
+</style>
+</head>
 
 <body>
 
-<header>
-<h1>🛍️ Babuu Products</h1>
-<p>หมวดหมู่สินค้าของร้าน</p>
-</header>
+<h2>🛍️ Babuu Shop</h2>
 
-<nav>
-<a href="index.html">🏠 Home</a>
-<a href="about.html">ℹ️ About</a>
-<a href="service.html">🛠️ Services</a>
-<a href="contact.html">📱 Contact</a>
-</nav>
+<!-- 🔵 หมวดหมู่ทั้งหมด -->
+<div class="category-bar">
 
-<!-- 🔥 FILTER BAR (ต้องอยู่ตรงนี้เท่านั้น) -->
-<div class="filter-box">
-<button onclick="filterCategory('all')">ทั้งหมด</button>
-<button onclick="filterCategory('ตูน')">ตูน</button>
-<button onclick="filterCategory('ของตกแต่ง')">ของตกแต่ง</button>
-<button onclick="filterCategory('บ็อค / Block')">บ็อค / Block</button>
-<button onclick="filterCategory('เกม / ADS')">เกม / ADS</button>
-<button onclick="filterCategory('Effect')">Effect</button>
-<button onclick="filterCategory('BG / พื้นหลัง')">BG</button>
-<button onclick="filterCategory('Font')">Font</button>
-<button onclick="filterCategory('Sticker')">Sticker</button>
-<button onclick="filterCategory('Character (หมี)')">Character 🐻</button>
-<button onclick="filterCategory('Style IG')">Style IG</button>
-<button onclick="filterCategory('Course / เช่า')">Course</button>
+<button onclick="filterProducts('all')">ทั้งหมด</button>
+
+<button onclick="filterProducts('toon')">ตูน</button>
+<button onclick="filterProducts('decorate')">ของตกแต่ง</button>
+<button onclick="filterProducts('block')">บ็อค / Block</button>
+<button onclick="filterProducts('ads')">เกม / ADS</button>
+<button onclick="filterProducts('effect')">Effect</button>
+<button onclick="filterProducts('bg')">BG / พื้นหลัง</button>
+<button onclick="filterProducts('font')">Font</button>
+<button onclick="filterProducts('form')">Form</button>
+<button onclick="filterProducts('sticker')">Sticker</button>
+<button onclick="filterProducts('base')">เบส</button>
+<button onclick="filterProducts('line')">ลายเส้น</button>
+<button onclick="filterProducts('animal')">สัตว์ / ต้าวก้อน</button>
+<button onclick="filterProducts('character')">Character (หมี)</button>
+<button onclick="filterProducts('ig')">Style IG</button>
+<button onclick="filterProducts('teach_sign')">กลุ่มสอนป้าย</button>
+<button onclick="filterProducts('teach_head')">สอนทำหัวป้าย</button>
+<button onclick="filterProducts('group')">กลุ่มรวม</button>
+<button onclick="filterProducts('room_f')">ห้อง F</button>
+<button onclick="filterProducts('course')">Course / เช่า</button>
+<button onclick="filterProducts('png')">PNG / BG / เจ้าหญิง</button>
+<button onclick="filterProducts('lottery')">หวย / เบอร์</button>
+<button onclick="filterProducts('license')">สูบ / สิทธิ์ขาด</button>
+
 </div>
 
-<!-- 🛍️ PRODUCT AREA -->
-<div id="product-list">Loading...</div>
+<!-- 🟣 สินค้าตัวอย่าง -->
+<div class="products">
 
-<!-- 🔥 SCRIPT (ต้องอยู่ล่างสุด) -->
+  <div class="product-item" data-category="toon">
+    <h3>ตัวอย่างตูน</h3>
+    <p class="price">50 บาท</p>
+  </div>
+
+  <div class="product-item" data-category="bg">
+    <h3>พื้นหลังสวย ๆ</h3>
+    <p class="price">30 บาท</p>
+  </div>
+
+  <div class="product-item" data-category="sticker">
+    <h3>สติ๊กเกอร์น่ารัก</h3>
+    <p class="price">25 บาท</p>
+  </div>
+
+  <div class="product-item" data-category="character">
+    <h3>หมี Character</h3>
+    <p class="price">99 บาท</p>
+  </div>
+
+</div>
+
+<!-- JS -->
 <script>
+function filterProducts(category) {
+  const items = document.querySelectorAll('.product-item');
 
-const API = "https://script.google.com/macros/s/AKfycbwn5O2T57lvmM4P8log2rjs6MjJw-84pcL7lgQQRkbX96faHDjH77n9CbbmE7oQ9t_B/exec";
-
-let allProducts = [];
-
-fetch(API)
-.then(res => res.json())
-.then(data => {
-    allProducts = data;
-    renderProducts(allProducts);
-});
-
-function renderProducts(list){
-const box = document.getElementById("product-list");
-
-box.innerHTML = "";
-
-list.forEach(p => {
-box.innerHTML += `
-<div class="card" onclick="openDrive('${p.drive}')">
-<img src="${p.img}">
-<h3>${p.name}</h3>
-<p>${p.price} บาท</p>
-</div>
-`;
-});
+  items.forEach(item => {
+    if (category === 'all') {
+      item.style.display = 'block';
+    } else {
+      item.style.display =
+        (item.dataset.category === category) ? 'block' : 'none';
+    }
+  });
 }
-
-function filterCategory(cat){
-
-if(cat === "all"){
-renderProducts(allProducts);
-return;
-}
-
-renderProducts(allProducts.filter(p => p.category === cat));
-}
-
-function openDrive(link){
-window.open(link, "_blank");
-}
-
 </script>
 
 </body>
+</html>
