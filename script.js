@@ -24,3 +24,46 @@ fetch(API)
 function openDrive(link) {
   window.open(link, "_blank");
 }
+
+let allProducts = [];
+
+fetch(API)
+.then(res => res.json())
+.then(data => {
+    allProducts = data;
+    renderProducts(allProducts);
+});
+
+function renderProducts(products){
+const box = document.getElementById("product-list");
+box.innerHTML = "";
+
+products.forEach(p => {
+box.innerHTML += `
+<div class="product" onclick="openDrive('${p.drive}')">
+<img src="${p.img}">
+<h4>${p.name}</h4>
+<p>${p.price} บาท</p>
+</div>
+`;
+});
+}
+
+/* 🔥 FILTER หมวดหมู่ */
+function filterCategory(cat){
+
+if(cat === "all"){
+renderProducts(allProducts);
+return;
+}
+
+const filtered = allProducts.filter(p =>
+p.category === cat
+);
+
+renderProducts(filtered);
+}
+
+function openDrive(link){
+window.open(link,"_blank");
+}
