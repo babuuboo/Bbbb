@@ -1,0 +1,10 @@
+<div class="filter-box">
+  <button onclick="filterCategory('all')">ทั้งหมด</button>
+  <button onclick="filterCategory('เสื้อผ้า')">เสื้อผ้า</button>
+  <button onclick="filterCategory('กางเกง')">กางเกง</button>
+  <button onclick="filterCategory('กระโปรง')">กระโปรง</button>
+  <button onclick="filterCategory('เครื่องสำอาง')">เครื่องสำอาง</button>
+  <button onclick="filterCategory('ของใช้')">ของใช้</button>
+  <button onclick="filterCategory('ของกิน')">ของกิน</button>
+  <button onclick="filterCategory('เครื่องประดับ')">เครื่องประดับ</button>
+</div>
