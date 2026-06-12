@@ -3,46 +3,50 @@ const API = "https://script.google.com/macros/s/AKfycbwn5O2T57lvmM4P8log2rjs6MjJ
 let allProducts = [];
 
 fetch(API)
-  .then(res => res.json())
-  .then(data => {
-    allProducts = data;
+.then(res => res.json())
+.then(data => {
 
-    allProducts.sort((a, b) => (a.order || 0) - (b.order || 0));
+console.log("🔥 DATA FROM SHEET =", data);
 
-    renderProducts(allProducts);
-  })
-  .catch(err => console.log(err));
+allProducts = data;
+
+renderProducts(allProducts);
+
+})
+.catch(err => {
+console.log("❌ API ERROR =", err);
+});
 
 function renderProducts(products){
-  const box = document.getElementById("product-list");
-  box.innerHTML = "";
 
-  products.forEach(p => {
-    box.innerHTML += `
-      <div class="product" onclick="openDrive('${p.drive}')">
-        <img src="${p.img}">
-        <h4>${p.name}</h4>
-        <p>${p.price} บาท</p>
-      </div>
-    `;
-  });
+console.log("🧩 render =", products);
+
+document.getElementById("product-list").innerHTML =
+products.map(p => `
+<div class="card" onclick="openDrive('${p.drive}')">
+<img src="${p.img}" onerror="this.style.display='none'">
+<h3>${p.name || 'ไม่มีชื่อ'}</h3>
+<p>${p.price || '-'} บาท</p>
+</div>
+`).join("");
 }
 
-/* 🔥 FILTER หมวดหมู่ */
 function filterCategory(cat){
 
-  if(cat === "all"){
-    renderProducts(allProducts);
-    return;
-  }
+console.log("🎯 filter =", cat);
 
-  const filtered = allProducts.filter(p =>
-    p.category === cat
-  );
+if(cat === "all"){
+renderProducts(allProducts);
+return;
+}
 
-  renderProducts(filtered);
+const result = allProducts.filter(p => p.category === cat);
+
+console.log("📦 filtered =", result);
+
+renderProducts(result);
 }
 
 function openDrive(link){
-  window.open(link, "_blank");
+window.open(link,"_blank");
 }
