@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Babuu Shop</title>
+
+<style>
+body{
+  font-family:Arial;
+  margin:0;
+  background:#FFF6E9;
+}
+
+/* header */
+header{
+  background:#F8D7DA;
+  padding:20px;
+  text-align:center;
+}
+
+/* search */
+.search-box{
+  padding:10px;
+  text-align:center;
+}
+
+.search-box input{
+  width:90%;
+  max-width:400px;
+  padding:10px;
+  border-radius:12px;
+  border:1px solid #ddd;
+}
+
+/* category */
+#catBar{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:6px;
+  padding:10px;
+}
+
+button{
+  padding:8px 12px;
+  border:none;
+  border-radius:999px;
+  background:#ffd1dc;
+  cursor:pointer;
+}
+
+/* products */
+#product-list{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  padding:15px;
+}
+
+.product{
+  background:white;
+  padding:10px;
+  border-radius:15px;
+  box-shadow:0 2px 8px rgba(0,0,0,.1);
+  text-align:center;
+}
+
+.product img{
+  width:100%;
+  height:120px;
+  object-fit:cover;
+  border-radius:10px;
+}
+
+.product button{
+  margin-top:5px;
+  background:#ff8fab;
+  color:white;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>🍓 Babuu Shop</h1>
+</header>
+
+<!-- 🔍 search -->
+<div class="search-box">
+<input type="text" id="searchInput" placeholder="ค้นหาสินค้า..." onkeyup="searchProduct()">
+</div>
+
+<!-- 🟣 category -->
+<div id="catBar"></div>
+
+<!-- 🛍 products -->
+<div id="product-list"></div>
+
+<script>
+
+const API = "https://script.google.com/macros/s/AKfycbzPF9ctkc9qCLYY53vqfAhHaJ9crGmevjflKzC063ZRUw1taeiNI6KrUQ-bOOp4_Sv6/exec";
+
+let allProducts = [];
+let currentCat = "all";
+
+/* load data */
+fetch(API)
+.then(res => res.json())
+.then(data => {
+  allProducts = data;
+  renderCategories();
+  render(allProducts);
+});
+
+/* render categories */
+function renderCategories(){
+  const cats = ["all", ...new Set(allProducts.map(p => p.category))];
+
+  document.getElementById("catBar").innerHTML =
+    cats.map(c => `
+      <button onclick="setCat('${c}')">${c}</button>
+    `).join("");
+}
+
+function setCat(cat){
+  currentCat = cat;
+  filter();
+}
+
+/* filter */
+function filter(){
+  let list = allProducts;
+
+  if(currentCat !== "all"){
+    list = list.filter(p => p.category === currentCat);
+  }
+
+  render(list);
+}
+
+/* render products */
+function render(list){
+  const box = document.getElementById("product-list");
+  box.innerHTML = "";
+
+  list.forEach(p => {
+    box.innerHTML += `
+      <div class="product">
+        <img src="${p.img}">
+        <h4>${p.name}</h4>
+        <p>${p.price} บาท</p>
+        <button onclick="addCart('${p.name}',${p.price})">
+          + ใส่ตะกร้า
+        </button>
+      </div>
+    `;
+  });
+}
+
+/* search */
+function searchProduct(){
+  const v = document.getElementById("searchInput").value.toLowerCase();
+
+  const filtered = allProducts.filter(p =>
+    p.name.toLowerCase().includes(v)
+  );
+
+  render(filtered);
+}
+
+/* cart */
+let cart = [];
+
+function addCart(name,price){
+  cart.push({name,price});
+  alert("เพิ่มลงตะกร้าแล้ว 🛒");
+}
+
+</script>
+
+</body>
+</html>
